@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #FEFEFE;
+  cursor: none; /* Hide default cursor */
+}
+
+/* Custom Cursor with Image */
+.custom-cursor {
+  position: fixed;
+  width: 40px; /* Adjust size as needed */
+  height: 40px;
+  background-image: url('./public/logoo(1).png'); /* Replace with your image path */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none; /* Ensures it doesn't interfere with clicks */
+  border-radius: 50%; /* Makes it circular */
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out;
+  z-index: 9999;
+}
+
+
+/* Loading Animation */
+.loading-dots:after {
+  content: " . . .";
+  animation: dots 2s steps(5, end) infinite;
+}
+
+@keyframes dots {
+  0%, 20% {
+    color: rgba(0, 0, 0, 0);
+    text-shadow: .25em 0 0 rgba(0, 0, 0, 0), .5em 0 0 rgba(0, 0, 0, 0);
+  }
+  40% {
+    color: white;
+    text-shadow: .25em 0 0 rgba(0, 0, 0, 0), .5em 0 0 rgba(0, 0, 0, 0);
+  }
+  60% {
+    text-shadow: .25em 0 0 white, .5em 0 0 rgba(0, 0, 0, 0);
+  }
+  80%, 100% {
+    text-shadow: .25em 0 0 white, .5em 0 0 white;
+  }
+}

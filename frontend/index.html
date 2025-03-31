@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./public/logoo(1).png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plateau_Konnect</title>
+    <style>
+      body {
+        background-color: #FEFEFE;
+        cursor: none; /* Hide default cursor */
+      }
+
+      /* Custom Cursor */
+      .custom-cursor {
+        position: fixed;
+        width: 40px; /* Adjust as needed */
+        height: 40px;
+        background-image: url('./public/logoo(1).png'); /* Replace with your image */
+        background-size: cover;
+        background-repeat: no-repeat;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: transform 0.1s ease-out;
+        z-index: 9999;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="cursor"></div>
+
+    <script>
+      document.addEventListener("mousemove", function (e) {
+        const cursor = document.getElementById("cursor");
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+      });
+    </script>
+
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
