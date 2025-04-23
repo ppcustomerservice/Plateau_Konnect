@@ -18,7 +18,9 @@ const SignIn = () => {
   });
   const [status, setStatus] = useState(STATUS.IDLE);
   const [adminError, setAdminError] = useState(false);
-  const { error } = useSelector((state) => state.user);
+  const {user, error } = useSelector((state) => state.user);
+  console.log("user on console",user)
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

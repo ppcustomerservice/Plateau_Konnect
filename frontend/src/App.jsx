@@ -30,6 +30,12 @@ import BuyersPlanPage from "./pages/Home/BuyersPlanPage";
 import BuildersPage from "./pages/Home/BuildersPage";
 import MonetizationPage from "./pages/Home/MonetizationPage";
 import Support from "./pages/Admin/Support";
+import BrokerDashboard from "./pages/Broker/BrokerDashboard";
+import BrokerSidebar from "./pages/Broker/BrokerSidebar";
+import BrokerLeadPage from "./pages/Broker/BrokerLeadPage";
+import BrokerAppointmentPage from "./pages/Broker/BrokerAppointmentPage";
+import BrokerSettingsPage from "./pages/Broker/BrokerSettingsPage";
+import BrokerTaskPage from "./pages/Broker/BrokerTaskPage";
 export default function App() {
   const callRef = useRef(false);
   const dispatch = useDispatch();
@@ -81,6 +87,14 @@ export default function App() {
             <Route path="/builderplans" element={<BuildersPage/>} />
             <Route path="/MonetizationPage" element={<MonetizationPage/>} />
             <Route path="/support" element={<Support/>} />
+            
+            {/* Broker Routes */}
+            <Route path="/broker-dashboard" element={<BrokerDashboard />} />
+            <Route path="/broker-sidebar" element={<BrokerSidebar />} />
+            <Route path="/broker-leadpage" element={<BrokerLeadPage />} />
+            <Route path="/broker-Appointment" element={<BrokerAppointmentPage />} />
+            <Route path="/broker-Setting" element={<BrokerSettingsPage />} />
+            <Route path="/broker-Task" element={<BrokerTaskPage />} />
 
 
 

@@ -22,6 +22,7 @@ const AgentPage = () => {
   const fetchAgents = async () => {
     try {
       const response = await axiosPublic.get(API_URL);
+      console.log(response.data);
       setAgents(response.data);
   
     } catch (error) {
@@ -66,9 +67,9 @@ const AgentPage = () => {
               <tbody>
                 {agents.map((agent,i) => (
                   <tr key={i} className="bg-white hover:bg-orange-100 text-black">
-                    <td className="p-2 sm:p-3 border">{agent.name}</td>
+                    <td className="p-2 sm:p-3 border">{agent.fullname}</td>
                     <td className="p-2 sm:p-3 border">{agent.email}</td>
-                    <td className="p-2 sm:p-3 border">{agent.phone}</td>
+                    <td className="p-2 sm:p-3 border">{agent.mobileNo}</td>
                     <td className="p-2 sm:p-3 border">{agent.role}</td>
                     <td className="p-2 sm:p-3 border">
                       <Button 

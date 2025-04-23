@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import ProfileForm from "./ProfileForm";
-import { allOptions } from "../utils/constants/user";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser, logout } from "../redux/user/userService";
+import { getMyListing } from "../redux/listings/listingService";
 import useAxios from "../hooks/useAxios";
 import { axiosPublic } from "../api/axios";
-import MyListings from "../redux/listings/MyListings";
-import { STATUS } from "../utils/constants/common";
-import ConfirmationModal from "../components/ConfirmationModal";
-import { getMyListing } from "../redux/listings/listingService";
 import useFile from "../hooks/useFile";
+
+import ProfileForm from "./ProfileForm";
+import MyListings from "../redux/listings/MyListings";
+import ConfirmationModal from "../components/ConfirmationModal";
+import { allOptions } from "../utils/constants/user";
+import { STATUS } from "../utils/constants/common";
 
 const renderer = (option) => {
   switch (option) {
@@ -22,7 +24,15 @@ const renderer = (option) => {
   }
 };
 
-const optionRenderer = (label, value, option, setOption) => {
+const optionRenderer = (label, value, option, setOption, navigate) => {
+  const handleClick = () => {
+    if (value === "broker") {
+      navigate("/broker-dashboard"); // Redirect to Broker Dashboard
+    } else {
+      setOption(value);
+    }
+  };
+
   return (
     <li
       key={label}
@@ -32,7 +42,7 @@ const optionRenderer = (label, value, option, setOption) => {
           ? "bg-gradient-to-r from-purple-600 to-indigo-700 text-white shadow-lg scale-110 border border-white border-opacity-30"
           : "bg-white text-gray-800 hover:bg-gray-100 hover:scale-105"
       }`}
-      onClick={() => setOption(value)}
+      onClick={handleClick}
     >
       {label}
     </li>
@@ -44,12 +54,13 @@ const Profile = () => {
   const [open, setOpen] = useState(false);
   const { status, user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const axios = useAxios(axiosPublic);
   const { handleFileDelete } = useFile();
 
   useEffect(() => {
     if (status === STATUS.LOADING) return;
-    else if (option === "logout" || option === "delete") {
+    if (option === "logout" || option === "delete") {
       setOpen(true);
     }
   }, [option, status, user]);
@@ -76,7 +87,9 @@ const Profile = () => {
       {/* Confirmation Modal */}
       <ConfirmationModal
         header={option === "delete" ? "Delete Account" : "Logout"}
-        body={`Are you sure you want to ${option === "delete" ? "delete" : "logout from"} your account?`}
+        body={`Are you sure you want to ${
+          option === "delete" ? "delete" : "logout from"
+        } your account?`}
         open={open}
         onClose={() => setOpen(false)}
         onSubmit={option === "delete" ? handleDelete : handleLogout}
@@ -95,14 +108,16 @@ const Profile = () => {
 
         {/* Profile Content */}
         <div className="order-last col-span-full md:col-span-8 bg-white p-8 rounded-3xl shadow-xl border-4 border-gray-300 transition-all duration-500 hover:shadow-3xl">
-          <h2 className="text-3xl font-bold text-indigo-700 mb-4 text-center">Profile Details</h2>
+          <h2 className="text-3xl font-bold text-indigo-700 mb-4 text-center">
+            Profile Details
+          </h2>
           <div className="border-t-4 border-purple-500 w-24 mx-auto mb-6"></div>
           {renderer(option)}
         </div>
 
         {/* Sidebar Menu */}
         <ul className="flex md:flex-col font-semibold text-gray-700 col-span-full md:col-span-2 md:order-last bg-white p-6 rounded-3xl shadow-lg space-y-4 transition-all duration-300">
-          {allOptions.map((opt) => optionRenderer(opt.label, opt.value, option, setOption))}
+          {allOptions.map((opt) => optionRenderer(opt.label, opt.value, option, setOption, navigate))}
         </ul>
       </div>
     </>

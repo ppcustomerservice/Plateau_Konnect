@@ -22,4 +22,11 @@ const propertyRegistrationMailContent={
     to:"" 
 }
 
-module.exports={forgotPasswordMailContent,userRegistrationMailContent,propertyRegistrationMailContent}
+const appointmentMailContent = {
+    subject: "Appointment Scheduled Successfully",
+    html: fs.readFileSync(path.resolve(__dirname, '../view', 'appointment-template.html'), 'utf-8'),
+    from: process.env.EMAIL_ID,
+    to: "" // to be dynamically set
+  }
+
+module.exports={forgotPasswordMailContent,userRegistrationMailContent,propertyRegistrationMailContent,appointmentMailContent}

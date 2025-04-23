@@ -25,6 +25,16 @@ export const signInUser = createAsyncThunk(
       console.log("Signin Request:", props);
       const response = await axiosPublic.post("/api/auth/signin", props);
       console.log("Signin Response:", response.data);
+      localStorage.setItem("Email", JSON.stringify(response?.data?.email));
+      console.log("Response",response)
+      console.log("Response",response.data.accessToken)
+
+
+      // ✅ Store token in localStorage
+      if (response?.data?.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
+      }
+
       return response.data;
     } catch (error) {
       console.error("Signin Error:", error.response?.data || error.message);
@@ -32,6 +42,7 @@ export const signInUser = createAsyncThunk(
     }
   }
 );
+
 
 export const updateUser = createAsyncThunk(
   "user/update",

@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 
+const taskSchema = new mongoose.Schema({
+  task: { type: String, required: true },
+  date: { type: String },
+  completed: { type: Boolean, default: false },
+  TaskId:{type:String,required:true,Unique:true}
+});
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -40,6 +46,7 @@ const userSchema = new mongoose.Schema(
       unique:true,
       sparse:true  //allowing multiple null values in db for unique fields otherwise mongodb consider them duplicates 
     },
+    tasks: [taskSchema],
     avatar: {
       type: String,
       default:

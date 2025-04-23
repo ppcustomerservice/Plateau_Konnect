@@ -12,6 +12,7 @@ const enumRouter = require("./routes/enum.route.js");
 const listingRouter = require("./routes/listing.route.js");
 const adminRoutes = require("./routes/admin");
 const leadRouter = require("./routes/lead.route.js");
+const taskRoutes = require("./routes/task.routes"); 
 
 // Custom Error Handlers
 const CustomError = require("./utils/error/CustomError.js");
@@ -69,6 +70,10 @@ app.use("/api/auth", authRouter);
 app.use("/api/enums", enumRouter);
 app.use("/api/listings", listingRouter);
 app.use("/api/leads", leadRouter);
+app.use("/api/tasks", taskRoutes);
+app.use("/api/appointments", require("./routes/appointment"));
+
+
 
 // Default route to check server status
 app.get("/", (req, res) => {
