@@ -16,22 +16,28 @@ const Header = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    if (!filter.searchText.trim()) return;
+
     if (location.pathname !== "/listings") {
       navigate("/listings");
     } else {
-      dispatch(getListings()).unwrap();
+      dispatch(getListings());
     }
-    dispatch(setFilter({ searchText: "" })); // Clear search input
   };
 
   useEffect(() => {
     setOpenMenu(false);
-    dispatch(setFilter({ searchText: "" })); // Clear search text on navigation
-  }, [location, dispatch]);
+  }, [location]);
+
+  useEffect(() => {
+    if (location.pathname === "/listings") {
+      dispatch(getListings());
+    }
+  }, [filter.searchText, location.pathname, dispatch]);
 
   return (
     <header
-      className={`fixed top-4 left-1/2 transform -translate-x-1/2 w-[92%] md:w-[85%] transition-all duration-500 bg-white shadow-lg border border-gray-300 py-2 px-5 rounded-full z-50`}
+      className="fixed top-4 left-1/2 transform -translate-x-1/2 w-[92%] md:w-[85%] transition-all duration-500 bg-white shadow-lg border border-gray-300 py-2 px-5 rounded-full z-50"
     >
       <nav className="flex justify-between items-center h-full">
         <Link to="/" className="flex items-center font-bold text-xl">
@@ -85,7 +91,10 @@ const Header = () => {
           )}
         </div>
 
-        <div className="md:hidden text-gray-700 cursor-pointer" onClick={() => setOpenMenu(!openMenu)}>
+        <div
+          className="md:hidden text-gray-700 cursor-pointer"
+          onClick={() => setOpenMenu(!openMenu)}
+        >
           {openMenu ? <IoClose size={26} /> : <IoMenu size={26} />}
         </div>
       </nav>

@@ -4,7 +4,7 @@ import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { Modal } from "../../components/Modal";
 import BrokerSidebar from "../Broker/BrokerSidebar";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
 export default function BrokerLeadPage() {

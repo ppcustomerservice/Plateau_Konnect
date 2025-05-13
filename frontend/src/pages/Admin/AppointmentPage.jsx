@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -18,7 +18,7 @@ import {
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import Sidebar from "../Admin/Sidebar"; // ✅ Import Sidebar
+import Sidebar from "../Admin/Sidebar";
 
 const localizer = momentLocalizer(moment);
 
@@ -26,23 +26,42 @@ const AppointmentPage = () => {
   const [appointments, setAppointments] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const [notification, setNotification] = useState(false);
+
   const [newAppointment, setNewAppointment] = useState({
     client: "",
     email: "",
     platform: "Zoom",
     url: "",
     start: new Date(),
-    end: new Date(),
     repeat: "None",
   });
-  const [notification, setNotification] = useState(false);
 
-  const handleOpenDialog = ({ start }) => {
+  // ▶️ Fetch appointments from backend on mount
+  useEffect(() => {
+    fetch("http://localhost:5000/api/appointments")
+      .then((res) => res.json())
+      .then((data) => {
+        const withEnd = data.map((a) => ({
+          ...a,
+          end: moment(a.start).add(1, "hour").toDate(),
+        }));
+        setAppointments(withEnd);
+      })
+      .catch((err) => console.error("Error fetching appointments:", err));
+  }, []);
+
+  const handleOpenDialog = (slotInfo) => {
+    const start = slotInfo.start || slotInfo;
     setNewAppointment({
-      ...newAppointment,
+      client: "",
+      email: "",
+      platform: "Zoom",
+      url: "",
       start,
-      end: moment(start).add(1, "hour").toDate(),
+      repeat: "None",
     });
+    setSelectedEvent(null);
     setOpenDialog(true);
   };
 
@@ -52,114 +71,77 @@ const AppointmentPage = () => {
   };
 
   const handleInputChange = (e) => {
-    setNewAppointment({ ...newAppointment, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setNewAppointment((prev) => ({ ...prev, [name]: value }));
   };
 
-  const addRepeatedAppointments = (appt) => {
-    let repeatedAppointments = [appt];
-    if (appt.repeat === "Daily") {
-      for (let i = 1; i <= 6; i++) {
-        repeatedAppointments.push({
-          ...appt,
-          start: moment(appt.start).add(i, "days").toDate(),
-          end: moment(appt.end).add(i, "days").toDate(),
-        });
-      }
-    } else if (appt.repeat === "Weekly") {
-      for (let i = 1; i <= 4; i++) {
-        repeatedAppointments.push({
-          ...appt,
-          start: moment(appt.start).add(i, "weeks").toDate(),
-          end: moment(appt.end).add(i, "weeks").toDate(),
-        });
-      }
-    } else if (appt.repeat === "Monthly") {
-      for (let i = 1; i <= 3; i++) {
-        repeatedAppointments.push({
-          ...appt,
-          start: moment(appt.start).add(i, "months").toDate(),
-          end: moment(appt.end).add(i, "months").toDate(),
-        });
-      }
+  const handleSaveAppointment = async () => {
+    try {
+      const { client, email, platform, url, start, repeat } = newAppointment;
+      const res = await fetch("http://localhost:5000/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ client, email, platform, url, start, repeat }),
+      });
+      const saved = await res.json();
+      if (!res.ok) throw new Error(saved.error || "Failed to save");
+
+      const end = moment(start).add(1, "hour").toDate();
+      setAppointments((prev) => [...prev, { ...saved, end }]);
+      setNotification(true);
+      setOpenDialog(false);
+    } catch (err) {
+      console.error("Failed to save appointment:", err);
     }
-    return repeatedAppointments;
-  };
-
-  const handleSaveAppointment = () => {
-    const newAppointments = addRepeatedAppointments(newAppointment);
-    setAppointments([...appointments, ...newAppointments]);
-    setNotification(true);
-    setOpenDialog(false);
   };
 
   const handleEventClick = (event) => {
     setSelectedEvent(event);
-    setNewAppointment(event);
+    setNewAppointment({
+      client: event.client,
+      email: event.email,
+      platform: event.platform,
+      url: event.url,
+      start: new Date(event.start),
+      repeat: event.repeat,
+    });
     setOpenDialog(true);
   };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Content */}
       <Container
         maxWidth="lg"
-        sx={{
-          flex: 1,
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          bgcolor: "#f5f5f5",
-          py: 4,
-          overflowX: "auto",
-        }}
+        sx={{ flex: 1, py: 4, overflowX: "auto" }}
       >
         <Typography
-          variant="h4"
-          sx={{
-            color: "#FF6600",
-            mb: 3,
-            fontWeight: "bold",
-            textAlign: "center",
-          }}
+          variant="h2"
+          sx={{ color: "#FF6600", mb: 3, fontWeight: "bold", textAlign: "center" }}
         >
-          📅 Appointments Management
+          📅 Admin Appointments
         </Typography>
 
         <Box
-          sx={{
-            width: "100%",
-            maxWidth: "1200px",
-            height: "75vh",
-            bgcolor: "white",
-            borderRadius: 2,
-            boxShadow: 3,
-            p: 2,
-            overflow: "hidden",
-          }}
+          sx={{ width: "100%", height: "75vh", bgcolor: "white", borderRadius: 2, boxShadow: 3, p: 2 }}
         >
           <Calendar
             localizer={localizer}
             events={appointments.map((a) => ({
               title: a.client,
               start: new Date(a.start),
-              end: new Date(a.end),
+              end: a.end,
             }))}
             startAccessor="start"
             endAccessor="end"
-            style={{ height: "100%", width: "100%" }}
             selectable
+            views={["month", "week", "day"]}
+            defaultView="week"
             onSelectSlot={handleOpenDialog}
+            onDoubleClickSlot={handleOpenDialog}
             onSelectEvent={handleEventClick}
             step={30}
             timeslots={2}
-            defaultView="week"
-            popup
-            longPressThreshold={10}
           />
         </Box>
 
@@ -193,12 +175,26 @@ const AppointmentPage = () => {
               value={newAppointment.url}
             />
             <FormControl fullWidth margin="dense">
+              <InputLabel>Platform</InputLabel>
+              <Select
+                name="platform"
+                value={newAppointment.platform}
+                onChange={handleInputChange}
+              >
+                {["Zoom", "Google Meet", "Microsoft Teams", "Other"].map((opt) => (
+                  <MenuItem key={opt} value={opt}>{opt}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth margin="dense">
               <InputLabel>Repeat</InputLabel>
-              <Select name="repeat" value={newAppointment.repeat} onChange={handleInputChange}>
+              <Select
+                name="repeat"
+                value={newAppointment.repeat}
+                onChange={handleInputChange}
+              >
                 {["None", "Daily", "Weekly", "Monthly"].map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
+                  <MenuItem key={option} value={option}>{option}</MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -209,18 +205,13 @@ const AppointmentPage = () => {
               fullWidth
               margin="dense"
               InputLabelProps={{ shrink: true }}
-              onChange={handleInputChange}
+              onChange={(e) =>
+                setNewAppointment((prev) => ({
+                  ...prev,
+                  start: new Date(e.target.value),
+                }))
+              }
               value={moment(newAppointment.start).format("YYYY-MM-DDTHH:mm")}
-            />
-            <TextField
-              type="datetime-local"
-              label="End Time"
-              name="end"
-              fullWidth
-              margin="dense"
-              InputLabelProps={{ shrink: true }}
-              onChange={handleInputChange}
-              value={moment(newAppointment.end).format("YYYY-MM-DDTHH:mm")}
             />
             <Button
               onClick={handleSaveAppointment}
@@ -231,6 +222,16 @@ const AppointmentPage = () => {
             </Button>
           </DialogContent>
         </Dialog>
+
+        <Snackbar
+          open={notification}
+          autoHideDuration={6000}
+          onClose={() => setNotification(false)}
+        >
+          <Alert onClose={() => setNotification(false)} severity="success" sx={{ width: "100%" }}>
+            Appointment successfully saved!
+          </Alert>
+        </Snackbar>
       </Container>
     </div>
   );

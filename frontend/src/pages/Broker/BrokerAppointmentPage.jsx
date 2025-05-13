@@ -78,6 +78,7 @@ export default function BrokerAppointmentPage() {
 
   const handleSaveAppointment = async () => {
     try {
+      console.log("Saving appointment:", newAppointment); 
       const { client, email, platform, url, start, repeat } = newAppointment;
       const res = await fetch("http://localhost:5000/api/appointments", {
         method: "POST",

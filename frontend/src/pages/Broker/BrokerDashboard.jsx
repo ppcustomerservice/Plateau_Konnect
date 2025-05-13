@@ -12,6 +12,7 @@ import {
   FaTrashAlt,
 } from "react-icons/fa";
 import BrokerSidebar from "./BrokerSidebar";
+import { Link } from "react-router-dom";
 
 export default function BrokerDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -81,8 +82,6 @@ export default function BrokerDashboard() {
   return (
     <div className="p-6 bg-white min-h-screen flex w-full text-gray-900 relative">
       <BrokerSidebar />
-      
-
 
       <div className="flex-1 p-6">
         {/* Header */}
@@ -107,7 +106,9 @@ export default function BrokerDashboard() {
               )}
               {showNotifications && (
                 <div className="absolute top-10 right-0 w-80 bg-white shadow-lg border border-orange-300 rounded-lg z-10">
-                  <h3 className="font-semibold text-gray-700 px-4 pt-3">🔔 Pending Tasks</h3>
+                  <h3 className="font-semibold text-gray-700 px-4 pt-3">
+                    🔔 Pending Tasks
+                  </h3>
                   {pendingTasks.length > 0 ? (
                     <ul className="max-h-64 overflow-auto px-4 py-2">
                       {pendingTasks.map((task, index) => (
@@ -117,7 +118,9 @@ export default function BrokerDashboard() {
                         >
                           <span>{task.task}</span>
                           <button
-                            onClick={() => handleDeleteNotification(task.TaskId)}
+                            onClick={() =>
+                              handleDeleteNotification(task.TaskId)
+                            }
                             className="text-red-500 hover:text-red-700"
                           >
                             <FaTrashAlt />
@@ -126,19 +129,26 @@ export default function BrokerDashboard() {
                       ))}
                     </ul>
                   ) : (
-                    <p className="px-4 py-2 text-sm text-gray-500">No pending tasks</p>
+                    <p className="px-4 py-2 text-sm text-gray-500">
+                      No pending tasks
+                    </p>
                   )}
                 </div>
               )}
             </div>
-            <FaUserCircle className="text-4xl text-blue-600" />
+            <Link to="/profile">
+              <FaUserCircle className="text-4xl text-blue-600 cursor-pointer" />
+            </Link>
           </div>
         </div>
 
         {/* Metrics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           {Object.entries(metrics).map(([key, value], index) => (
-            <div key={index} className="p-6 bg-orange-400 rounded-xl shadow-lg border-l-4 border-orange-500">
+            <div
+              key={index}
+              className="p-6 bg-orange-400 rounded-xl shadow-lg border-l-4 border-orange-500"
+            >
               <h2 className="text-md font-semibold text-gray-700 capitalize">
                 {key.replace(/([A-Z])/g, " $1").trim()}
               </h2>
@@ -149,7 +159,9 @@ export default function BrokerDashboard() {
 
         {/* Charts Section */}
         <div className="bg-white p-6 rounded-xl shadow-lg border border-orange-300">
-          <h2 className="text-lg font-semibold text-gray-700">📊 Lead Trends</h2>
+          <h2 className="text-lg font-semibold text-gray-700">
+            📊 Lead Trends
+          </h2>
           <Line data={leadTrends} className="mt-4" />
         </div>
 
@@ -160,7 +172,10 @@ export default function BrokerDashboard() {
           </h2>
           <ul className="mt-4">
             {recentDeals.map((deal, index) => (
-              <li key={index} className="border-b border-gray-300 p-2 text-gray-700">
+              <li
+                key={index}
+                className="border-b border-gray-300 p-2 text-gray-700"
+              >
                 {deal.client} - {deal.property} ({deal.status})
               </li>
             ))}
@@ -174,7 +189,10 @@ export default function BrokerDashboard() {
           </h2>
           <ul className="mt-4">
             {pendingTasks.map((task, index) => (
-              <li key={index} className="border-b border-gray-300 p-2 text-gray-700">
+              <li
+                key={index}
+                className="border-b border-gray-300 p-2 text-gray-700"
+              >
                 {task.task}
               </li>
             ))}
@@ -183,11 +201,16 @@ export default function BrokerDashboard() {
 
         {/* Static Notifications */}
         <div className="bg-white p-6 rounded-xl shadow-lg mt-6 border-l-4 border-orange-500">
-          <h2 className="text-lg font-semibold text-gray-700">🔔 Notifications</h2>
+          <h2 className="text-lg font-semibold text-gray-700">
+            🔔 Notifications
+          </h2>
           <ul className="mt-4">
             {notifications.length > 0 ? (
               notifications.map((notification, index) => (
-                <li key={index} className="border-b border-gray-300 p-2 text-gray-700">
+                <li
+                  key={index}
+                  className="border-b border-gray-300 p-2 text-gray-700"
+                >
                   {notification.message}
                 </li>
               ))
@@ -200,4 +223,3 @@ export default function BrokerDashboard() {
     </div>
   );
 }
- 
