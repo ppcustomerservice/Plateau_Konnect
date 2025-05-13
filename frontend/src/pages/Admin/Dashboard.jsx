@@ -23,7 +23,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/admin/metrics");
+        const res = await axios.get("https://plateau-konnect-1-6hf1.onrender.com/api/admin/metrics");
         console.log(res.data)
         
         setMetrics(res.data);
@@ -34,7 +34,7 @@ export default function Dashboard() {
 
     const fetchRecentLeads = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/leads");
+        const res = await axios.get("https://plateau-konnect-1-6hf1.onrender.com/api/leads");
         setRecentLeads(res.data.slice(-5).reverse());
       } catch (error) {
         console.error("Error fetching recent leads:", error);
@@ -43,7 +43,7 @@ export default function Dashboard() {
 
     const fetchLeadTrends = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/leads/trends");
+        const res = await axios.get("https://plateau-konnect-1-6hf1.onrender.com/api/leads/trends");
         console.log("Lead Trends Data:", res.data);
         setLeadTrendsData(res.data.length ? res.data : [10, 20, 30]); // Prevent empty values
       } catch (error) {

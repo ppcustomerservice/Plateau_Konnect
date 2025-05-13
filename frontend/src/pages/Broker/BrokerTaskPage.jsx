@@ -50,7 +50,7 @@ const BrokerTaskPage = () => {
   const fetchTasks = () => {
     if (!brokerEmail) return;
     axios
-      .get(`http://localhost:5000/api/tasks/${brokerEmail}`)
+      .get(`https://plateau-konnect-1-6hf1.onrender.com/api/tasks/${brokerEmail}`)
       .then((res) => setTasks(res.data))
       .catch((err) => console.error("Fetching tasks failed:", err));
   };
@@ -70,7 +70,7 @@ const BrokerTaskPage = () => {
     }];
 
     axios
-      .post("http://localhost:5000/api/tasks/add", {
+      .post("https://plateau-konnect-1-6hf1.onrender.com/api/tasks/add", {
         email: brokerEmail,
         task,
       })
@@ -85,7 +85,7 @@ const BrokerTaskPage = () => {
   };
   const handleDeleteTask = (TaskId) => {
     axios
-      .delete(`http://localhost:5000/api/tasks/delete/${TaskId}`, {
+      .delete(`https://plateau-konnect-1-6hf1.onrender.com/api/tasks/delete/${TaskId}`, {
         data: { email: brokerEmail } // Pass broker email in the request body
       })
       .then((res) => {
@@ -102,7 +102,7 @@ const BrokerTaskPage = () => {
     );
     setTasks(updated);
     // Optionally, sync with backend here
-    axios.put("http://localhost:5000/api/tasks/edit/${editingTaskId}",{
+    axios.put("https://plateau-konnect-1-6hf1.onrender.com/api/tasks/edit/${editingTaskId}",{
       email: brokerEmail,
       task: updated,
       TaskId: TaskId,
@@ -136,7 +136,7 @@ const BrokerTaskPage = () => {
     );
 
     axios
-      .put(`http://localhost:5000/api/tasks/edit/${editingTaskId}`, {
+      .put(`https://plateau-konnect-1-6hf1.onrender.com/api/tasks/edit/${editingTaskId}`, {
         task: taskInput,
         date: reminderTime,
         email: brokerEmail // Pass broker email in the request body

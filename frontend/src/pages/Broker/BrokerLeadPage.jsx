@@ -40,7 +40,7 @@ export default function BrokerLeadPage() {
   useEffect(() => {
     if (!brokerEmail) return;
     axios
-      .get(`http://localhost:5000/api/leads/broker/${brokerEmail}`)
+      .get(`https://plateau-konnect-1-6hf1.onrender.com/api/leads/broker/${brokerEmail}`)
       .then((res) => setLeads(res.data))
       .catch((err) => console.error("Failed to fetch leads:", err));
   }, [brokerEmail]);
@@ -50,7 +50,7 @@ export default function BrokerLeadPage() {
     if (!newLead.name || !newLead.email || !newLead.phone) return;
     // use same POST /api/leads for admin, includes brokerEmail
     axios
-      .post("http://localhost:5000/api/leads", {
+      .post("https://plateau-konnect-1-6hf1.onrender.com/api/leads", {
         ...newLead,
         brokerEmail
       })
@@ -70,7 +70,7 @@ export default function BrokerLeadPage() {
       )
     );
     axios
-      .put(`http://localhost:5000/api/leads/${id}`, { status: newStatus })
+      .put(`https://plateau-konnect-1-6hf1.onrender.com/api/leads/${id}`, { status: newStatus })
       .catch((err) => console.error("Failed to update status:", err));
   };
 

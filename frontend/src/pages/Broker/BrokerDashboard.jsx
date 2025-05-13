@@ -66,7 +66,7 @@ export default function BrokerDashboard() {
   useEffect(() => {
     if (brokerEmail) {
       axios
-        .get(`http://localhost:5000/api/tasks/${brokerEmail}`)
+        .get(`https://plateau-konnect-1-6hf1.onrender.com/api/tasks/${brokerEmail}`)
         .then((res) => {
           const pending = res.data.filter((task) => task.completed === false);
           setPendingTasks(pending);

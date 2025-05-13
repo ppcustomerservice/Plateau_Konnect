@@ -39,7 +39,7 @@ const AppointmentPage = () => {
 
   // ▶️ Fetch appointments from backend on mount
   useEffect(() => {
-    fetch("http://localhost:5000/api/appointments")
+    fetch("https://plateau-konnect-1-6hf1.onrender.com/api/appointments")
       .then((res) => res.json())
       .then((data) => {
         const withEnd = data.map((a) => ({
@@ -78,7 +78,7 @@ const AppointmentPage = () => {
   const handleSaveAppointment = async () => {
     try {
       const { client, email, platform, url, start, repeat } = newAppointment;
-      const res = await fetch("http://localhost:5000/api/appointments", {
+      const res = await fetch("https://plateau-konnect-1-6hf1.onrender.com/api/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ client, email, platform, url, start, repeat }),

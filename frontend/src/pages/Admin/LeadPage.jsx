@@ -6,7 +6,7 @@ import { Modal } from "../../components/Modal";
 import axios from "axios";
 import Sidebar from "../Admin/Sidebar";
 
-const API_URL = "http://localhost:5000/api/leads";
+const API_URL = "https://plateau-konnect-1-6hf1.onrender.com/api/leads";
 
 const LeadPage = () => {
   const [selectedFilter, setSelectedFilter] = useState("All");

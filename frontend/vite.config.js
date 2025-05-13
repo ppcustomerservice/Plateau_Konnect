@@ -9,7 +9,7 @@ export default defineConfig({
     port: process.env.PORT || 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:5000', // assuming backend runs on port 5000
+        target: 'https://plateau-konnect-1-6hf1.onrender.com', // assuming backend runs on port 5000
         changeOrigin: true,
         secure: false,
       },

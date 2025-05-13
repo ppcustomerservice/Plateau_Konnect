@@ -13,7 +13,7 @@ const AgentPage = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const API_URL = "http://localhost:5000/api/users/agents";
+  const API_URL = "https://plateau-konnect-1-6hf1.onrender.com/api/users/agents";
 
   useEffect(() => {
     fetchAgents();
