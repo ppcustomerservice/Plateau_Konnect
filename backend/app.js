@@ -40,6 +40,8 @@ app.use(
       "https://merry-rugelach-ad5ed9.netlify.app",
       "https://broker.propertyplateau.com",
       "http://localhost:3000",
+      "https://main.d29k7expne17jm.amplifyapp.com/" ,
+      "https://main.d29k7expne17jm.amplifyapp.com" 
     ],
     credentials: true,
     methods: "GET, POST, PUT, DELETE, OPTIONS",
