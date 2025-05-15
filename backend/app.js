@@ -41,7 +41,9 @@ app.use(
       "https://broker.propertyplateau.com",
       "http://localhost:3000",
       "https://main.d29k7expne17jm.amplifyapp.com/" ,
-      "https://main.d29k7expne17jm.amplifyapp.com" 
+      "https://main.d29k7expne17jm.amplifyapp.com" ,
+      "https://www.broker.propertyplateau.com/" ,
+      "https://www.broker.propertyplateau.com" 
     ],
     credentials: true,
     methods: "GET, POST, PUT, DELETE, OPTIONS",
