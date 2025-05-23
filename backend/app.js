@@ -43,8 +43,8 @@ app.use(
       "https://main.d29k7expne17jm.amplifyapp.com/" ,
       "https://main.d29k7expne17jm.amplifyapp.com" ,
       "https://www.broker.propertyplateau.com/" ,
-      "https://konnect.propertyplateau.com/",
-      "https://konnect.propertyplateau.com",
+      "https://www.konnect.propertyplateau.com/",
+      "https://www.konnect.propertyplateau.com",
       "https://www.broker.propertyplateau.com" 
     ],
     credentials: true,
