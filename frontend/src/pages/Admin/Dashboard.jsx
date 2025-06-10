@@ -57,8 +57,8 @@ export default function Dashboard() {
   }, []);
 
   const user = {
-    name: "Arpita Sharma",
-    email: "arpita.sharma@example.com",
+    name: "Abhishek Pandhare",
+    email: "abhishek.pandhare@propertyplateau.com",
   };
 
   const leadTrends = {
